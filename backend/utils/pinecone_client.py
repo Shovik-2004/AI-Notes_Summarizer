@@ -1,9 +1,8 @@
-# backend/utils/pinecone_client.py
 import os
 from dotenv import load_dotenv
 from pinecone import Pinecone
 from typing import Dict, Any, List
-from utils.embeddings import get_embedding  # Hugging Face API-based
+from utils.embeddings import get_embedding  # Updated Hugging Face fetch
 
 load_dotenv()
 
@@ -30,18 +29,20 @@ def upsert_note(note_id: str, note_text: str, metadata: Dict[str, Any]) -> None:
     }])
     print(f"✅ Successfully upserted note ID {note_id} into Pinecone")
 
-def search_similar_notes(query_text: str, top_k: int = 5) -> List[Dict[str, Any]]:
-    """
-    Search Pinecone using embedding of query_text and return top_k matches.
-    """
-    query_embedding = get_embedding(query_text)
-    if not query_embedding:
+def search_similar_notes(query_text: str, user_id: str, top_k: int = 5) -> List[Dict[str, Any]]:
+    embedding = get_embedding(query_text)
+    if not embedding:
         print("❌ Failed to generate embedding for search query")
         return []
 
-    result = index.query(
-        vector=query_embedding,
-        top_k=top_k,
-        include_metadata=True
-    )
-    return result.get("matches", [])
+    try:
+        result = index.query(
+            vector=embedding,
+            top_k=top_k,
+            include_metadata=True,
+            filter={"user_id": user_id}
+        )
+        return result.get("matches", [])
+    except Exception as e:
+        print(f"❌ Pinecone query error: {e}")
+        return []

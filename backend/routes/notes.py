@@ -5,10 +5,9 @@ from models import Note
 from utils.auth import get_current_user
 from utils.summarizer import summarize_text
 from utils.pinecone_client import upsert_note, search_similar_notes
-from typing import List
 from schemas import NoteOut
 from pydantic import BaseModel
-
+from typing import List, Dict, Any
 router = APIRouter()
 
 class SearchQuery(BaseModel):
@@ -53,19 +52,29 @@ def search_notes(
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
-    results = search_similar_notes(query_text=query, top_k=5)
+    try:
+        pinecone_result = search_similar_notes(
+            query_text=query,
+            user_id=str(current_user.id),  # ✅ Ensure only this user's notes are searched
+            top_k=5
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
 
+    # Safely extract matches
+    matches = pinecone_result if isinstance(pinecone_result, list) else pinecone_result.get("matches", [])
 
     matching_notes = []
-    for match in results.get('matches', []):
-        metadata = match.get('metadata', {})
-        if metadata.get("user_id") == str(current_user.id):
-            note = db.query(Note).filter(Note.id == int(match["id"])).first()
-            if note:
-                matching_notes.append({
-                    "id": note.id,
-                    "content": note.content,
-                    "summary": note.summary
-                })
+    for match in matches:
+        note_id = match.get("id")
+        if not note_id:
+            continue
+        note = db.query(Note).filter(Note.id == int(note_id)).first()
+        if note:
+            matching_notes.append({
+                "id": note.id,
+                "content": note.content,
+                "summary": note.summary
+            })
 
     return {"results": matching_notes}
