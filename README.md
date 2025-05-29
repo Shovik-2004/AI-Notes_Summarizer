@@ -1,4 +1,4 @@
-# 🧠 AI-Powered Note-Taking App gvgv
+# 🧠 AI-Powered Note-Taking App
 
 A simple, intelligent note-taking application that allows users to paste or upload long-form content and get **Instant AI-generated summaries**, view all past notes, and even **search notes semantically** using Pinecone.
 
