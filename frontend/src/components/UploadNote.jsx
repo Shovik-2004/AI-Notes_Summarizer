@@ -36,7 +36,7 @@ export default function UploadNote() {
 
       <textarea
         className="w-full p-3 border rounded mb-4 h-40"
-        placeholder="Paste your note here..."
+        placeholder="Type your note here..."
         value={note}
         onChange={(e) => setNote(e.target.value)}
       />
