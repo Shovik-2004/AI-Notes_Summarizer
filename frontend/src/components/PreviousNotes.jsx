@@ -33,19 +33,19 @@ export default function PreviousNotes() {
   }, [])
 
   return (
-    <div className="bg-white p-6 rounded shadow w-full max-w-3xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">📜 Previous Notes</h2>
+    <div className="bg-white p-6 rounded shadow w-full max-w-4xl mx-auto mt-8">
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-900">📜 Previous Notes</h2>
 
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-center text-gray-700">Loading...</p>
       ) : error ? (
-        <p className="text-red-600">{error}</p>
+        <p className="text-center text-red-600">{error}</p>
       ) : notes.length === 0 ? (
-        <p>No previous notes found.</p>
+        <p className="text-center text-gray-600">No previous notes found.</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-6">
           {notes.map((note) => (
-            <li key={note.id} className="border p-4 rounded bg-gray-50">
+            <li key={note.id} className="bg-gray-100 p-5 rounded shadow text-gray-800 border border-gray-300">
               <p className="mb-2"><strong>📝 Note:</strong> {note.content}</p>
               <p><strong>📄 Summary:</strong> {note.summary}</p>
             </li>

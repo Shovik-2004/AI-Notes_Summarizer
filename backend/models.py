@@ -9,7 +9,7 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     password = Column(String)
 
-    # 🔁 One-to-many relationship: one user → many notes
+    # One-to-many relationship: one user → many notes
     notes = relationship("Note", back_populates="user")
 
 
@@ -21,5 +21,5 @@ class Note(Base):
     summary = Column(String)
     user_id = Column(Integer, ForeignKey("users.id"))
 
-    # 🔁 Connect back to the user
+    # Connect back to the user
     user = relationship("User", back_populates="notes")

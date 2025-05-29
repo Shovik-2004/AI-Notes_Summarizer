@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import auth, notes # Import routes AFTER FastAPI import
+from routes import auth, notes 
 from dotenv import load_dotenv
 import os
 
@@ -9,10 +9,10 @@ import os
 
 load_dotenv()
 
-os.getenv("OPENAI_API_KEY")  # It should now work
+os.getenv("OPENAI_API_KEY")
 
 
-app = FastAPI()  # ✅ Define the app BEFORE using it
+app = FastAPI()  
 
 # CORS middleware for frontend-backend interaction
 app.add_middleware(

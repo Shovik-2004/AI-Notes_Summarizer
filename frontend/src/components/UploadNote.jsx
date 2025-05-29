@@ -31,7 +31,7 @@ export default function UploadNote() {
 
   return (
     <div className="bg-white p-6 rounded shadow w-full max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4 text-center">📤 Upload Note</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">📤 Upload Note</h1>
 
       <textarea
         className="w-full p-3 border rounded mb-4 h-40"

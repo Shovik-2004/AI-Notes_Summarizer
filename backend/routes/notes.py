@@ -5,7 +5,7 @@ from models import Note
 from utils.auth import get_current_user
 from utils.summarizer import summarize_text
 from typing import List
-from schemas import NoteOut  # Create this if not exists
+from schemas import NoteOut  
 
 router = APIRouter()
 
@@ -38,4 +38,4 @@ def summarize_note(content: str):
 @router.get("/notes", response_model=List[NoteOut])
 def get_notes(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     notes = db.query(Note).filter(Note.user_id == current_user.id).all()
-    return notes  # ✅ CORRECT
+    return notes  

@@ -51,7 +51,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4 text-center">🔐 Login or Register</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">🔐 Login or Register</h1>
 
         {error && <div className="mb-4 text-red-600 text-center">{error}</div>}
 

@@ -1,7 +1,7 @@
 // src/App.jsx
 import { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { jwtDecode } from 'jwt-decode' // ✅ Correct named import
+import { jwtDecode } from 'jwt-decode' 
 import Login from './components/Login'
 import Register from './components/Register'
 import Dashboard from './components/Dashboard'

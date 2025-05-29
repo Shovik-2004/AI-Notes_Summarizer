@@ -8,6 +8,6 @@ export function isTokenExpired(token) {
     const currentTime = Date.now() / 1000 // in seconds
     return decoded.exp < currentTime
   } catch (err) {
-    return true // invalid token
+    return true 
   }
 }

@@ -10,16 +10,16 @@ from database import get_db
 
 router = APIRouter()
 
-# 🔐 Password Hashing Configuration
+# Password Hashing Configuration
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# 🔑 JWT Configuration (Replace with environment variables in production)
+# JWT Configuration 
 SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10
 
 
-# ✅ Utility Functions
+# Utility Functions
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
@@ -33,7 +33,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-# 📌 User Registration Endpoint
+# User Registration Endpoint
 @router.post("/register")
 def register(username: str, password: str, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(User.username == username).first()
@@ -48,7 +48,7 @@ def register(username: str, password: str, db: Session = Depends(get_db)):
     return {"message": "User registered successfully"}
 
 
-# 📌 User Login Endpoint
+#  User Login Endpoint
 @router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == form_data.username).first()
