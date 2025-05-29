@@ -1,5 +1,6 @@
 // src/components/PreviousNotes.jsx
 import { useEffect, useState } from 'react'
+import api from '../utils/axios' // ✅ import your custom axios instance
 
 export default function PreviousNotes() {
   const [notes, setNotes] = useState([])
@@ -9,18 +10,8 @@ export default function PreviousNotes() {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/notes', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        })
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch notes')
-        }
-
-        const data = await response.json()
-        setNotes(data)
+        const response = await api.get('/notes') // ✅ use your API instance
+        setNotes(response.data)
       } catch (err) {
         console.error('Error fetching notes:', err)
         setError('❌ Unable to load notes.')
