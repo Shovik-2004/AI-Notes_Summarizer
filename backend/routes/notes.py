@@ -53,7 +53,8 @@ def search_notes(
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
-    results = search_similar_notes(query_embedding=query, top_k=5)
+    results = search_similar_notes(query_text=query, top_k=5)
+
 
     matching_notes = []
     for match in results.get('matches', []):
