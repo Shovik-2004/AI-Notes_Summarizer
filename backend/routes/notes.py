@@ -1,19 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException, Form
+from fastapi import APIRouter, Depends, HTTPException, Form, Query
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Note
 from utils.auth import get_current_user
 from utils.summarizer import summarize_text
+from utils.pinecone_client import upsert_note, search_similar_notes
 from typing import List
 from schemas import NoteOut
-from utils.pinecone_client import upsert_note_embedding
-from utils.embeddings import get_embedding   
-from utils.pinecone_client import search_similar_notes
-from fastapi import Query
 from pydantic import BaseModel
 
-
 router = APIRouter()
+
 class SearchQuery(BaseModel):
     query: str
 
@@ -33,12 +30,10 @@ def upload_note(
     db.commit()
     db.refresh(note)
 
-    # Generate embedding and upsert into Pinecone
-    embedding = get_embedding(content)
-    upsert_note_embedding(str(note.id), embedding, {"user_id": str(current_user.id)})
+    # Upsert note to Pinecone (embedding handled inside upsert_note)
+    upsert_note(str(note.id), content, {"user_id": str(current_user.id)})
 
     return {"message": "Note saved successfully", "summary": summary}
-
 
 @router.post("/summarize")
 def summarize_note(content: str):
@@ -52,15 +47,13 @@ def get_notes(db: Session = Depends(get_db), current_user: dict = Depends(get_cu
     notes = db.query(Note).filter(Note.user_id == current_user.id).all()
     return notes  
 
-
 @router.get("/search-notes")
 def search_notes(
     query: str = Query(..., min_length=3),
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
-    embedding = get_embedding(query)
-    results = search_similar_notes(query_embedding=embedding, top_k=5)
+    results = search_similar_notes(query_embedding=query, top_k=5)
 
     matching_notes = []
     for match in results.get('matches', []):
@@ -75,4 +68,3 @@ def search_notes(
                 })
 
     return {"results": matching_notes}
-
