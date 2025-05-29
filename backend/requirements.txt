@@ -30,7 +30,7 @@ mdurl==0.1.2
 openai==1.82.0
 orjson==3.10.18
 packaging==24.2
-pinecone-client==6.0.0
+pinecone-client==3.0.0
 pinecone-plugin-interface==0.0.7
 psycopg2-binary==2.9.9
 pydantic==2.11.5
