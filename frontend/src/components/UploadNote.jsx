@@ -50,7 +50,7 @@ export default function UploadNote() {
 
       {summary && (
         <div className="mt-6 bg-gray-100 p-4 rounded border">
-          <h2 className="font-semibold mb-2">📝 Summary</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">📝 Summary</h2>
           <p className="whitespace-pre-line text-gray-800">{summary}</p>
         </div>
       )}
