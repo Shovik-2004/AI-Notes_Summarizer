@@ -65,3 +65,4 @@ watchfiles==1.0.5
 websockets==15.0.1
 zstandard==0.23.0
 passlib[bcrypt]==1.7.4
+sentence-transformers==2.2.2
