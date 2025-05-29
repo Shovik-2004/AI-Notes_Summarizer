@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import api from "../utils/axios"; // At the top
+
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -8,27 +10,30 @@ export default function Login() {
   const navigate = useNavigate()
 
   const handleLogin = async () => {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({ username, password }),
+  try {
+    const response = await api.post(
+      "/login",
+      new URLSearchParams({
+        username,
+        password
       })
+    );
 
-      const data = await response.json()
-      if (response.ok && data.access_token) {
-        localStorage.setItem('token', data.access_token)
-        setError('')
-        navigate('/dashboard')
-      } else {
-        setError(data.detail || 'Invalid credentials')
-      }
-    } catch (err) {
-      setError('Login failed')
+    const data = response.data;
+
+    if (response.status === 200 && data.access_token) {
+      localStorage.setItem("token", data.access_token);
+      setError("");
+      navigate("/dashboard");
+    } else {
+      setError(data.detail || "Invalid credentials");
     }
+  } catch (err) {
+    const message =
+      err.response?.data?.detail || "Login failed. Please try again.";
+    setError(message);
   }
+};
 
   const handleRegister = async () => {
     try {

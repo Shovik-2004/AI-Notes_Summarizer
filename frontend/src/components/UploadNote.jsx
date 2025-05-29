@@ -1,33 +1,34 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import api from '../utils/axios';
 
 export default function UploadNote() {
-  const [note, setNote] = useState('')
-  const [summary, setSummary] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [note, setNote] = useState('');
+  const [summary, setSummary] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleUpload = async () => {
-  setLoading(true)
-  try {
-    const response = await fetch('http://127.0.0.1:8000/upload-note', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: new URLSearchParams({ content: note }),
-    })
+    setLoading(true);
+    try {
+      const response = await api.post(
+        '/upload-note',
+        new URLSearchParams({ content: note }),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
 
-    const data = await response.json()
-    localStorage.setItem('latestSummary', data.summary)
-    setSummary(data.summary || 'No summary returned.')
-  } catch (error) {
-    console.error('Upload failed:', error)
-    setSummary('❌ Failed to summarize note.')
-  } finally {
-    setLoading(false)
-  }
-}
-
+      const data = response.data;
+      localStorage.setItem('latestSummary', data.summary);
+      setSummary(data.summary || 'No summary returned.');
+    } catch (error) {
+      console.error('Upload failed:', error);
+      setSummary('❌ Failed to summarize note.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white p-6 rounded shadow w-full max-w-2xl mx-auto">
@@ -55,5 +56,5 @@ export default function UploadNote() {
         </div>
       )}
     </div>
-  )
+  );
 }
