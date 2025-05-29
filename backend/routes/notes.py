@@ -10,9 +10,12 @@ from utils.pinecone_client import upsert_note_embedding
 from utils.embeddings import get_embedding   
 from utils.pinecone_client import search_similar_notes
 from fastapi import Query
+from pydantic import BaseModel
 
 
 router = APIRouter()
+class SearchQuery(BaseModel):
+    query: str
 
 @router.post("/upload-note")
 def upload_note(

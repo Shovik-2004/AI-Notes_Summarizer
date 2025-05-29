@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard'
 import UploadNote from './components/UploadNote'
 import ViewSummary from './components/ViewSummary'
 import PreviousNotes from './components/PreviousNotes'
+import SearchNotes from './components/SearchNotes'
 import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="upload" element={<UploadNote />} />
         <Route path="summary" element={<ViewSummary />} />
         <Route path="previous" element={<PreviousNotes />} />
+        <Route path="search" element={<SearchNotes />} /> {/* ✅ Search Notes added */}
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />

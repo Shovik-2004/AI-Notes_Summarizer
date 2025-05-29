@@ -27,6 +27,9 @@ export default function Dashboard() {
               <Link to="previous" className="text-blue-600 hover:text-blue-800 font-medium">
                 Previous Notes
               </Link>
+              <Link to="search" className="text-blue-600 hover:text-blue-800 font-medium">
+                Search Notes
+              </Link>
             </>
           )}
           <button onClick={handleLogout} className="text-red-500 hover:text-red-700 font-medium">
@@ -59,6 +62,13 @@ export default function Dashboard() {
             >
               <span>🕓</span>
               <span>Previous Notes</span>
+            </Link>
+            <Link
+              to="search"
+              className="bg-yellow-500 text-white font-semibold py-3 px-8 rounded shadow-md hover:bg-yellow-600 transition flex items-center space-x-2"
+            >
+              <span>🔍</span>
+              <span>Search Notes</span>
             </Link>
           </div>
         ) : (
