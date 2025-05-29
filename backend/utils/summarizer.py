@@ -1,14 +1,21 @@
 import os
 import requests
 from dotenv import load_dotenv
+from typing import Optional
 
 load_dotenv()
 
+API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+HF_API_KEY = os.getenv("HF_API_KEY", "")
+
+headers = {
+    "Authorization": f"Bearer {HF_API_KEY}",
+    "Content-Type": "application/json"
+}
+
 def summarize_text(content: str) -> str:
-    API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-    headers = {
-        "Authorization": f"Bearer {os.getenv('HF_API_KEY')}"
-    }
+    if not HF_API_KEY:
+        return "❌ Hugging Face API key not set in environment variables."
 
     payload = {
         "inputs": content,
@@ -22,7 +29,13 @@ def summarize_text(content: str) -> str:
     try:
         response = requests.post(API_URL, headers=headers, json=payload)
         response.raise_for_status()
-        summary = response.json()[0]["summary_text"]
-        return summary
+        data = response.json()
+
+        if isinstance(data, list) and "summary_text" in data[0]:
+            return data[0]["summary_text"]
+        else:
+            return f"❌ Unexpected response format: {data}"
+    except requests.exceptions.RequestException as e:
+        return f"❌ API request failed: {e}"
     except Exception as e:
-        return f"❌ Failed to summarize: {str(e)}"
+        return f"❌ An error occurred: {e}"
