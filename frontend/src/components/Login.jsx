@@ -1,57 +1,54 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import api from "../utils/axios"; // At the top
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from "../utils/axios";
 
 export default function Login() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
-  try {
-    const response = await api.post(
-      "/login",
-      new URLSearchParams({
-        username,
-        password
-      })
-    );
+    try {
+      const response = await api.post(
+        "/login",
+        new URLSearchParams({ username, password })
+      );
 
-    const data = response.data;
+      const data = response.data;
 
-    if (response.status === 200 && data.access_token) {
-      localStorage.setItem("token", data.access_token);
-      setError("");
-      navigate("/dashboard");
-    } else {
-      setError(data.detail || "Invalid credentials");
+      if (response.status === 200 && data.access_token) {
+        localStorage.setItem("token", data.access_token);
+        setError('');
+        navigate('/dashboard');
+      } else {
+        setError(data.detail || 'Invalid credentials');
+      }
+    } catch (err) {
+      const message = err.response?.data?.detail || 'Login failed. Please try again.';
+      setError(message);
     }
-  } catch (err) {
-    const message =
-      err.response?.data?.detail || "Login failed. Please try again.";
-    setError(message);
-  }
-};
+  };
 
   const handleRegister = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/register?username=${username}&password=${password}`, {
-        method: 'POST',
-      })
+      const response = await api.post(
+        "/register",
+        new URLSearchParams({ username, password })
+      );
 
-      const data = await response.json()
-      if (response.ok) {
-        alert('✅ Registration successful! You can now log in.')
-        setError('')
+      const data = response.data;
+      if (response.status === 200) {
+        alert('✅ Registration successful! You can now log in.');
+        setError('');
       } else {
-        setError(data.detail || 'Registration failed')
+        setError(data.detail || 'Registration failed');
       }
     } catch (err) {
-      setError('Registration failed')
+      const message = err.response?.data?.detail || 'Registration failed';
+      setError(message);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -90,5 +87,5 @@ export default function Login() {
         </button>
       </div>
     </div>
-  )
+  );
 }

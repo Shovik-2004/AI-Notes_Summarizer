@@ -1,4 +1,3 @@
-// src/utils/axios.js
 import axios from "axios";
 
 const api = axios.create({
@@ -8,7 +7,7 @@ const api = axios.create({
   },
 });
 
-// Automatically attach the token from localStorage if available
+// Automatically attach the token if available
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
