@@ -39,7 +39,7 @@ export default function Login() {
 
       const data = response.data;
       if (response.status === 200) {
-        alert('✅ Registration successful! You can now log in.');
+        alert('Registration successful! You can now log in.');
         setError('');
       } else {
         setError(data.detail || 'Registration failed');

@@ -24,7 +24,7 @@ export default function Register() {
       if (response.ok) {
         setSuccess('Registration successful! You can now log in.')
         setError('')
-        setTimeout(() => navigate('/login'), 2000) // Redirect after 2s
+        setTimeout(() => navigate('/login'), 2000) 
       } else {
         setError(data.detail || 'Registration failed')
         setSuccess('')

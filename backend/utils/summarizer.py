@@ -15,7 +15,7 @@ headers = {
 
 def summarize_text(content: str) -> str:
     if not HF_API_KEY:
-        return "❌ Hugging Face API key not set in environment variables."
+        return "Hugging Face API key not set in environment variables."
 
     payload = {
         "inputs": content,
@@ -34,8 +34,8 @@ def summarize_text(content: str) -> str:
         if isinstance(data, list) and "summary_text" in data[0]:
             return data[0]["summary_text"]
         else:
-            return f"❌ Unexpected response format: {data}"
+            return f"Unexpected response format: {data}"
     except requests.exceptions.RequestException as e:
-        return f"❌ API request failed: {e}"
+        return f"API request failed: {e}"
     except Exception as e:
-        return f"❌ An error occurred: {e}"
+        return f"An error occurred: {e}"

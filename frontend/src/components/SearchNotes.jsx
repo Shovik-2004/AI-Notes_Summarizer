@@ -27,7 +27,7 @@ export default function SearchNotes() {
       setResults(data.results || [])
     } catch (err) {
       console.error(err)
-      setError('❌ Failed to fetch search results')
+      setError('Failed to fetch search results')
     } finally {
       setLoading(false)
     }

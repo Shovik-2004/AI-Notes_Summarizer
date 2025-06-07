@@ -24,7 +24,7 @@ export default function UploadNote() {
       setSummary(data.summary || 'No summary returned.');
     } catch (error) {
       console.error('Upload failed:', error);
-      setSummary('❌ Failed to summarize note.');
+      setSummary(' Failed to summarize note.');
     } finally {
       setLoading(false);
     }

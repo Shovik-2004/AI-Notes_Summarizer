@@ -10,7 +10,7 @@ from database import get_db
 
 router = APIRouter()
 
-# Password Hashing Configuration
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # JWT Configuration 

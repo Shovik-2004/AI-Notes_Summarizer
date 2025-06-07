@@ -6,7 +6,7 @@ export default function ProtectedRoute({ children }) {
   const token = localStorage.getItem('token')
 
   if (!token || isTokenExpired(token)) {
-    localStorage.removeItem('token') // Auto logout
+    localStorage.removeItem('token') 
     return <Navigate to="/login" />
   }
 

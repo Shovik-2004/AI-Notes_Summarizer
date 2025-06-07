@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from pinecone import Pinecone
 from typing import Dict, Any, List
-from utils.embeddings import get_embedding  # Updated Hugging Face fetch
+from utils.embeddings import get_embedding 
 
 load_dotenv()
 
@@ -19,7 +19,7 @@ def upsert_note(note_id: str, note_text: str, metadata: Dict[str, Any]) -> None:
     """
     embedding = get_embedding(note_text)
     if not embedding:
-        print(f"❌ Failed to upsert: No embedding generated for note ID {note_id}")
+        print(f"Failed to upsert: No embedding generated for note ID {note_id}")
         return
 
     index.upsert(vectors=[{
@@ -27,12 +27,12 @@ def upsert_note(note_id: str, note_text: str, metadata: Dict[str, Any]) -> None:
         "values": embedding,
         "metadata": metadata
     }])
-    print(f"✅ Successfully upserted note ID {note_id} into Pinecone")
+    print(f"Successfully upserted note ID {note_id} into Pinecone")
 
 def search_similar_notes(query_text: str, user_id: str, top_k: int = 5) -> List[Dict[str, Any]]:
     embedding = get_embedding(query_text)
     if not embedding:
-        print("❌ Failed to generate embedding for search query")
+        print("Failed to generate embedding for search query")
         return []
 
     try:
@@ -44,5 +44,5 @@ def search_similar_notes(query_text: str, user_id: str, top_k: int = 5) -> List[
         )
         return result.get("matches", [])
     except Exception as e:
-        print(f"❌ Pinecone query error: {e}")
+        print(f"Pinecone query error: {e}")
         return []

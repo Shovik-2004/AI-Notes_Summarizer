@@ -29,7 +29,7 @@ def upload_note(
     db.commit()
     db.refresh(note)
 
-    # Upsert note to Pinecone (embedding handled inside upsert_note)
+    
     upsert_note(str(note.id), content, {"user_id": str(current_user.id)})
 
     return {"message": "Note saved successfully", "summary": summary}
@@ -55,13 +55,13 @@ def search_notes(
     try:
         pinecone_result = search_similar_notes(
             query_text=query,
-            user_id=str(current_user.id),  # ✅ Ensure only this user's notes are searched
+            user_id=str(current_user.id),  
             top_k=5
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
 
-    # Safely extract matches
+    
     matches = pinecone_result if isinstance(pinecone_result, list) else pinecone_result.get("matches", [])
 
     matching_notes = []

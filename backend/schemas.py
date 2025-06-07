@@ -6,4 +6,5 @@ class NoteOut(BaseModel):
     summary: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
